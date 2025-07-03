@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { Mail, Heart, BookOpen } from 'lucide-react'
 import Button3D from '@/components/Button3D'
+import Navbar from '@/components/Navbar'
 
 function SignInForm() {
   const [email, setEmail] = useState('')
@@ -39,7 +40,7 @@ function SignInForm() {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen"
       style={{
         backgroundColor: '#F5F3F0',
         backgroundImage: `
@@ -64,69 +65,103 @@ function SignInForm() {
         `
       }}
     >
-      <div className="max-w-md w-full">
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-stone-300/40">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl mb-4">
-              <BookOpen className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text text-transparent mb-2">
-              My Diary
-            </h1>
-            <p className="text-amber-800">
-              Sign in to capture your thoughts
-            </p>
-          </div>
+      {/* Navbar */}
+      <Navbar />
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-amber-800 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200 bg-white/50"
-                  placeholder="your@email.com"
-                />
+      <div className="flex items-center justify-center p-4" style={{ minHeight: 'calc(100vh - 80px)' }}>
+        <div className="max-w-md w-full">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-stone-300/40">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl mb-4">
+                <BookOpen className="w-8 h-8 text-white" />
               </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text text-transparent mb-2">
+                My Diary
+              </h1>
+              <p className="text-amber-800">
+                Sign in to capture your thoughts
+              </p>
             </div>
 
-            <Button3D
-              type="submit"
-              disabled={isLoading}
-              variant="primary"
-              size="lg"
-              icon={Heart}
-              isLoading={isLoading}
-              className="w-full"
-            >
-              {isLoading ? 'Sending...' : 'Send Magic Link'}
-            </Button3D>
-
-            {message && (
-              <div className={`text-center p-3 rounded-lg ${
-                message.includes('✨') 
-                  ? 'bg-green-50 text-green-800 border border-green-200' 
-                  : 'bg-red-50 text-red-800 border border-red-200'
-              }`}>
-                {message}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-amber-800 mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200 bg-white/50"
+                    placeholder="your@email.com"
+                  />
+                </div>
               </div>
-            )}
-          </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-stone-600">
-              No passwords needed! We&apos;ll send you a secure link via email.
-            </p>
+              <Button3D
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                size="lg"
+                icon={Heart}
+                isLoading={isLoading}
+                className="w-full"
+              >
+                {isLoading ? 'Sending...' : 'Send Magic Link'}
+              </Button3D>
+
+              {message && (
+                <div className={`text-center p-3 rounded-lg ${
+                  message.includes('✨') 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {message}
+                </div>
+              )}
+            </form>
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-stone-600">
+                No passwords needed! We&apos;ll send you a secure link via email.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-stone-200/30">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-stone-600">
+              © 2025 Konja Rehm
+            </div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://konja-rehm.de/impressum"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Imprint
+              </a>
+              <a
+                href="https://konja-rehm.de/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Privacy Policy
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

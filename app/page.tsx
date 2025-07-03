@@ -5,6 +5,7 @@ import { BookOpen, Heart, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import Button3D from '@/components/Button3D'
 import Dashboard from '@/components/Dashboard'
+import Navbar from '@/components/Navbar'
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -51,6 +52,9 @@ export default function Home() {
         `
       }}
     >
+      {/* Navbar */}
+      <Navbar />
+
       <div className="container mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto">
           {/* Hero Section */}
@@ -128,8 +132,38 @@ export default function Home() {
               </Button3D>
             </Link>
           </div>
+          
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-stone-200/30 mt-16">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-stone-600">
+              © 2025 Konja Rehm
+            </div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://konja-rehm.de/impressum"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Imprint
+              </a>
+              <a
+                href="https://konja-rehm.de/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Privacy Policy
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

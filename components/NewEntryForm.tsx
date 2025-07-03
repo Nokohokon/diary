@@ -56,7 +56,7 @@ export default function NewEntryForm({ onSubmit, onCancel, isLoading }: NewEntry
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent outline-none transition-all duration-200"
+            className="w-full px-4 py-2 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent outline-none transition-all duration-200 text-gray-500"
             placeholder="How was your day?"
           />
         </div>
@@ -96,7 +96,7 @@ export default function NewEntryForm({ onSubmit, onCancel, isLoading }: NewEntry
             onChange={(e) => setContent(e.target.value)}
             required
             rows={6}
-            className="w-full px-4 py-3 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
+            className="w-full text-gray-500 px-4 py-3 border border-stone-200 rounded-lg focus:ring-2 focus:ring-stone-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
             placeholder="Tell us about your day..."
           />
         </div>

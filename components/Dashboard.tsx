@@ -173,19 +173,19 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-1 flex gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
+              <Search className="text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-600 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search entries..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/90 border border-amber-200/30 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200"
+                className="w-full text-gray-500 pl-10 pr-4 py-3 bg-white/90 border border-amber-200/30 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200"
               />
             </div>
             <select
               value={moodFilter}
               onChange={(e) => setMoodFilter(e.target.value)}
-              className="px-4 py-3 bg-white/90 border border-amber-200/30 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200"
+              className="px-4 py-3 bg-white/90 text-gray-500 border border-amber-200/30 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200"
             >
               <option value="">All Moods</option>
               <option value="happy">Happy</option>
@@ -250,6 +250,35 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-stone-200/30 mt-16">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-sm text-stone-600">
+              © 2025 Konja Rehm
+            </div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://konja-rehm.de/impressum"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Imprint
+              </a>
+              <a
+                href="https://konja-rehm.de/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
+              >
+                Privacy Policy
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
