@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { Plus, BookOpen, LogOut, Search } from 'lucide-react'
+import Link from 'next/link'
 import NewEntryForm from '@/components/NewEntryForm'
 import DiaryEntryCard from '@/components/DiaryEntryCard'
 import Button3D from '@/components/Button3D'
@@ -267,14 +268,12 @@ export default function Dashboard() {
               >
                 Imprint
               </a>
-              <a
-                href="https://konja-rehm.de/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/privacy"
                 className="px-3 py-2 text-sm font-medium bg-gradient-to-b from-stone-50 via-stone-100 to-stone-200 hover:from-stone-100 hover:via-stone-200 hover:to-stone-300 text-stone-700 border border-stone-300 rounded-md shadow-[0_2px_0_0_rgb(120,113,108)] hover:shadow-[0_1px_0_0_rgb(120,113,108)] active:shadow-[0_0px_0_0_rgb(120,113,108)] transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-400 select-none"
               >
                 Privacy Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>
