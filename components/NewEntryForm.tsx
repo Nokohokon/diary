@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { X, Heart, Smile, Meh, Frown } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { X, Heart, Smile, Meh, Frown, Upload, Image, Trash2 } from 'lucide-react'
 import Button3D from '@/components/Button3D'
+import { compressImage, validateImageFile, formatFileSize } from '@/lib/imageUtils'
 
 interface NewEntryFormProps {
-  onSubmit: (data: { title: string; content: string; mood: string }) => void
+  onSubmit: (formData: FormData) => void
   onCancel: () => void
   isLoading: boolean
 }
@@ -20,11 +21,69 @@ export default function NewEntryForm({ onSubmit, onCancel, isLoading }: NewEntry
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [mood, setMood] = useState('')
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [isProcessingImage, setIsProcessingImage] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file
+      const validation = validateImageFile(file)
+      if (!validation.valid) {
+        alert(validation.error)
+        return
+      }
+
+      setIsProcessingImage(true)
+
+      try {
+        // Compress image if it's larger than 1MB
+        let processedFile = file
+        if (file.size > 1024 * 1024) {
+          processedFile = await compressImage(file, 1200, 0.8)
+        }
+
+        setSelectedImage(processedFile)
+        
+        // Create preview
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string)
+        }
+        reader.readAsDataURL(processedFile)
+      } catch (error) {
+        console.error('Error processing image:', error)
+        alert('Fehler beim Verarbeiten des Bildes')
+      } finally {
+        setIsProcessingImage(false)
+      }
+    }
+  }
+
+  const removeImage = () => {
+    setSelectedImage(null)
+    setImagePreview(null)
+    setIsProcessingImage(false)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (title.trim() && content.trim()) {
-      onSubmit({ title: title.trim(), content: content.trim(), mood })
+      const formData = new FormData()
+      formData.append('title', title.trim())
+      formData.append('content', content.trim())
+      formData.append('mood', mood)
+      
+      if (selectedImage) {
+        formData.append('image', selectedImage)
+      }
+      
+      onSubmit(formData)
     }
   }
 
@@ -101,17 +160,78 @@ export default function NewEntryForm({ onSubmit, onCancel, isLoading }: NewEntry
           />
         </div>
 
+        {/* Image Upload Section */}
+        <div>
+          <label className="block text-sm font-medium text-stone-800 mb-2">
+            Bild hinzufügen (optional)
+          </label>
+          
+          {!selectedImage && !isProcessingImage ? (
+            <div className="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center hover:border-stone-400 transition-colors">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+                id="image-upload"
+              />
+              <label
+                htmlFor="image-upload"
+                className="cursor-pointer"
+              >
+                <Image className="w-12 h-12 text-stone-400 mx-auto mb-3" />
+                <p className="text-stone-600 mb-2">Klicken Sie hier, um ein Bild hinzuzufügen</p>
+                <p className="text-stone-500 text-sm">JPEG, PNG, GIF, WebP (max. 5MB)</p>
+              </label>
+            </div>
+          ) : isProcessingImage ? (
+            <div className="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stone-400 mx-auto mb-3"></div>
+              <p className="text-stone-600">Bild wird verarbeitet...</p>
+            </div>
+          ) : (
+            <div className="relative">
+              <div className="border border-stone-200 rounded-lg p-4">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={imagePreview!}
+                    alt="Vorschau"
+                    className="w-20 h-20 object-cover rounded-lg"
+                  />
+                  <div className="flex-1">
+                    <p className="font-medium text-stone-800">{selectedImage?.name}</p>
+                    <p className="text-stone-500 text-sm">
+                      {selectedImage ? formatFileSize(selectedImage.size) : ''}
+                    </p>
+                  </div>
+                  <Button3D
+                    type="button"
+                    onClick={removeImage}
+                    variant="ghost"
+                    size="sm"
+                    icon={Trash2}
+                    className="!p-2 text-red-600 hover:text-red-700"
+                  >
+                    Entfernen
+                  </Button3D>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="flex gap-3 pt-4">
           <Button3D
             type="submit"
-            disabled={isLoading || !title.trim() || !content.trim()}
+            disabled={isLoading || isProcessingImage || !title.trim() || !content.trim()}
             variant="success"
             size="md"
             icon={Heart}
             isLoading={isLoading}
             className="flex-1"
           >
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? 'Saving...' : isProcessingImage ? 'Verarbeite Bild...' : 'Save'}
           </Button3D>
           <Button3D
             type="button"

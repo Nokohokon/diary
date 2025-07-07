@@ -33,21 +33,16 @@ const authConfig = {
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },
-    session: async ({ session, token }: { session: any; token: any }) => {
-      if (session?.user && token?.sub) {
-        session.user.id = token.sub
+    session: async ({ session, user }: { session: any; user: any }) => {
+      // When using database sessions, user object contains the user from DB
+      if (session?.user && user?.id) {
+        session.user.id = user.id
       }
       return session
     },
-    jwt: async ({ user, token }: { user: any; token: any }) => {
-      if (user) {
-        token.uid = user.id
-      }
-      return token
-    },
   },
   session: {
-    strategy: 'jwt' as const,
+    strategy: 'database' as const,
   },
   trustHost: true,
   debug: process.env.NODE_ENV === 'development',

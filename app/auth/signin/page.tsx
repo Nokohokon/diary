@@ -97,7 +97,7 @@ function SignInForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-10 pr-4 py-3 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200 bg-white/50"
+                    className="w-full pl-10 pr-4 py-3 text-gray-500 border border-amber-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200 bg-white/50"
                     placeholder="your@email.com"
                   />
                 </div>

@@ -6,10 +6,12 @@ Eine moderne, persönliche Tagebuch-Webapp mit Next.js, NextAuth.js und Prisma.
 
 - 🔐 **Sichere Authentifizierung** - Magic Link Login über E-Mail (kein Passwort nötig)
 - 📝 **Persönliche Einträge** - Erstelle und verwalte deine Tagebucheinträge
+- 🖼️ **Bild-Upload** - Füge Bilder zu deinen Tagebucheinträgen hinzu (direkt in der Datenbank gespeichert)
 - 😊 **Stimmungs-Tracking** - Verfolge deine Emotionen mit jedem Eintrag
 - 🔍 **Suche & Filter** - Finde deine Einträge schnell und einfach
 - 🎨 **Modernes Design** - Schöne, responsive UI mit Gradient-Designs
 - 📱 **Mobile-First** - Optimiert für alle Geräte
+- 🗜️ **Automatische Bildkomprimierung** - Bilder werden automatisch komprimiert für bessere Performance
 
 ## 🚀 Quick Start
 
@@ -131,6 +133,46 @@ Für Produktion (z.B. Vercel):
    ```
 
 4. **Deploy** - Vercel baut automatisch bei jedem Push!
+
+## 🖼️ Bild-Upload Feature
+
+### Funktionalität
+- **Direkte Datenbank-Speicherung**: Bilder werden als BYTEA in PostgreSQL gespeichert
+- **Unterstützte Formate**: JPEG, PNG, GIF, WebP
+- **Maximale Größe**: 5MB pro Bild
+- **Automatische Komprimierung**: Bilder > 1MB werden automatisch komprimiert
+- **Sichere Anzeige**: Bilder sind nur für den jeweiligen Benutzer sichtbar
+
+### Technische Details
+```typescript
+// Prisma Schema Erweiterung
+model DiaryEntry {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  mood      String?
+  imageData Bytes?   // Binary image data
+  imageName String?  // Original filename
+  imageType String?  // MIME type
+  imageSize Int?     // File size in bytes
+  // ...
+}
+```
+
+### API Endpoints
+- `POST /api/diary` - Erstellt Eintrag mit Bild (FormData)
+- `GET /api/diary/[id]/image` - Gibt Bild zurück mit korrekten Headers
+
+### Vorteile
+✅ **Alles in einer Datenbank** - Keine externen Abhängigkeiten  
+✅ **ACID-Compliance** - Atomare Transaktionen  
+✅ **Datenschutz** - Bilder sind sicher in der DB  
+✅ **Backup-Integration** - Bilder in regulären DB-Backups enthalten  
+
+### Nachteile
+⚠️ **Größere Datenbank** - Binärdaten vergrößern die DB  
+⚠️ **Performance** - Kann bei vielen/großen Bildern langsamer werden  
+⚠️ **Memory Usage** - Höherer RAM-Verbrauch beim Laden  
 
 ## 🏗️ Technologie-Stack
 

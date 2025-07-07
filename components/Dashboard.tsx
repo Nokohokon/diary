@@ -15,6 +15,10 @@ interface DiaryEntry {
   mood?: string
   createdAt: string
   updatedAt: string
+  imageData?: Buffer | null
+  imageName?: string | null
+  imageType?: string | null
+  imageSize?: number | null
 }
 
 export default function Dashboard() {
@@ -44,15 +48,12 @@ export default function Dashboard() {
     }
   }
 
-  const handleSubmitEntry = async (data: { title: string; content: string; mood: string }) => {
+  const handleSubmitEntry = async (formData: FormData) => {
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/diary', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData, // Send FormData directly
       })
 
       if (response.ok) {
@@ -60,10 +61,12 @@ export default function Dashboard() {
         setEntries([newEntry, ...entries])
         setShowNewEntryForm(false)
       } else {
-        console.error('Error creating entry')
+        const errorData = await response.json()
+        alert(`Fehler: ${errorData.error || 'Unbekannter Fehler'}`)
       }
     } catch (error) {
       console.error('Error submitting entry:', error)
+      alert('Fehler beim Speichern des Eintrags')
     } finally {
       setIsSubmitting(false)
     }

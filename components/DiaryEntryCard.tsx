@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { Calendar, Edit3, Trash2, Smile, Meh, Frown } from 'lucide-react'
 import Button3D from '@/components/Button3D'
+import { formatFileSize } from '@/lib/imageUtils'
 
 interface DiaryEntry {
   id: string
@@ -12,6 +13,10 @@ interface DiaryEntry {
   mood?: string
   createdAt: string
   updatedAt: string
+  imageData?: Buffer | null
+  imageName?: string | null
+  imageType?: string | null
+  imageSize?: number | null
 }
 
 interface DiaryEntryCardProps {
@@ -84,6 +89,26 @@ export default function DiaryEntryCard({ entry, onEdit, onDelete }: DiaryEntryCa
           )}
         </div>
       </div>
+      
+      {/* Image display */}
+      {entry.imageData && (
+        <div className="mt-4">
+          <img
+            src={`/api/diary/${entry.id}/image`}
+            alt={entry.imageName || 'Diary image'}
+            className="w-full max-w-md mx-auto rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => {
+              // Open image in new tab for full size view
+              window.open(`/api/diary/${entry.id}/image`, '_blank')
+            }}
+          />
+          {entry.imageName && (
+            <p className="text-xs text-stone-500 text-center mt-2">
+              {entry.imageName} ({entry.imageSize ? formatFileSize(entry.imageSize) : ''})
+            </p>
+          )}
+        </div>
+      )}
       
       <div className="prose prose-sm max-w-none">
         <p className="text-stone-700 leading-relaxed whitespace-pre-wrap">
