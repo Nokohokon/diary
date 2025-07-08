@@ -213,7 +213,7 @@ export default function NewEntryForm({ onSubmit, onCancel, isLoading }: NewEntry
                     icon={Trash2}
                     className="!p-2 text-red-600 hover:text-red-700"
                   >
-                    Entfernen
+                    Remove
                   </Button3D>
                 </div>
               </div>

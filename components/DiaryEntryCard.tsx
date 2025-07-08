@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
-import { Calendar, Edit3, Trash2, Smile, Meh, Frown } from 'lucide-react'
+import { Calendar, Edit3, Trash2, Smile, Meh, Frown, Pin } from 'lucide-react'
 import Button3D from '@/components/Button3D'
 import { formatFileSize } from '@/lib/imageUtils'
 
@@ -92,21 +92,46 @@ export default function DiaryEntryCard({ entry, onEdit, onDelete }: DiaryEntryCa
       
       {/* Image display */}
       {entry.imageData && (
-        <div className="mt-4">
-          <img
-            src={`/api/diary/${entry.id}/image`}
-            alt={entry.imageName || 'Diary image'}
-            className="w-full max-w-md mx-auto rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => {
-              // Open image in new tab for full size view
-              window.open(`/api/diary/${entry.id}/image`, '_blank')
-            }}
-          />
-          {entry.imageName && (
-            <p className="text-xs text-stone-500 text-center mt-2">
-              {entry.imageName} ({entry.imageSize ? formatFileSize(entry.imageSize) : ''})
-            </p>
-          )}
+        <div className="mt-6 mb-4 relative">
+          {/* Pinned image container */}
+          <div className="relative inline-block group/image">
+            {/* Pin/Thumbtack with fly-in animation */}
+            <div className="absolute -top-3 -right-2 z-10 transform rotate-12 transition-all duration-300 group-hover/image:rotate-6 group-hover/image:scale-110 animate-[flyInPin_0.8s_ease-out_0.3s_both]">
+              <div className="relative">
+                {/* Pin shadow */}
+                <div className="absolute top-1 left-1 w-6 h-6 bg-gray-400/30 rounded-full blur-sm"></div>
+                {/* Pin */}
+                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg border-2 border-red-400">
+                  <Pin className="w-3 h-3 text-white transform rotate-45" />
+                </div>
+              </div>
+            </div>
+            
+            {/* Image with pinned effect and fly-in animation */}
+            <div className="transform -rotate-2 hover:rotate-0 transition-all duration-500 ease-out animate-[flyInImage_0.8s_ease-out_0.1s_both]">
+              <img
+                src={`/api/diary/${entry.id}/image`}
+                alt={entry.imageName || 'Diary image'}
+                className="w-full max-w-md mx-auto rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer border-4 border-white"
+                style={{
+                  filter: 'drop-shadow(4px 6px 12px rgba(0,0,0,0.15))'
+                }}
+                onClick={() => {
+                  // Open image in new tab for full size view
+                  window.open(`/api/diary/${entry.id}/image`, '_blank')
+                }}
+              />
+            </div>
+            
+            {/* Image info with pinned styling and delayed fade-in */}
+            {entry.imageName && (
+              <div className="transform -rotate-1 mt-2 animate-[fadeInUp_0.6s_ease-out_0.8s_both]">
+                <p className="text-xs text-stone-500 text-center bg-yellow-50 inline-block px-2 py-1 rounded shadow-sm border border-yellow-200">
+                  {entry.imageName} ({entry.imageSize ? formatFileSize(entry.imageSize) : ''})
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       )}
       
